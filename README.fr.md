@@ -1,3 +1,5 @@
+[🇬🇧 Read in English](README.md)
+
 # SearXNG Backend pour Hermes Agent
 
 Connecteur SearXNG optimisé pour Hermes Agent — recherche web et extraction de contenu via une instance SearXNG, sans API key, avec outputs compacts pour économiser les tokens.
