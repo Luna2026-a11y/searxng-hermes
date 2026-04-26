@@ -1,15 +1,17 @@
 # SearXNG Backend for Hermes Agent
 
-Connecteur SearXNG optimisé pour Hermes Agent — recherche web et extraction de contenu via une instance SearXNG auto-hébergée, sans API key, avec outputs compacts pour économiser les tokens.
+Connecteur SearXNG optimisé pour Hermes Agent — recherche web et extraction de contenu via une instance SearXNG, sans API key, avec outputs compacts pour économiser les tokens.
 
 ## 🎯 Pourquoi ce repo ?
 
 Hermes Agent utilise des backends web payants (Firecrawl, Tavily, Exa, Parallel) pour `web_search` et `web_extract`. Ce repo fournit un **backend SearXNG alternatif gratuit** :
 
-- ✅ **Zéro API key** — instance auto-hébergée
+- ✅ **Zéro API key** — utilise votre instance SearXNG existante
 - ✅ **Optimisé tokens** — résultats compacts, pas de HTML brut
 - ✅ **Standalone** — fonctionne comme skill Hermes ou script CLI
 - ✅ **Stdlib Python** — zéro dépendance externe
+
+**Prérequis :** une instance SearXNG accessible avec le format JSON activé (`settings.yml` → `search.formats: [html, json]`).
 
 ## 📦 Ce qui est inclus
 
@@ -87,42 +89,6 @@ vs. HTML brut qui consomme 2000+ tokens pour le même résultat.
 | `SEARXNG_MAX_RESULTS` | Résultats max par recherche | `5` |
 | `SEARXNG_EXTRACT_MAX` | Taille max extraction (caractères) | `5000` |
 
-## 🏠 Installer une instance SearXNG
-
-### Docker (recommandé)
-
-```yaml
-# docker-compose.yml
-version: '3'
-services:
-  searxng:
-    image: searxng/searxng:latest
-    ports:
-      - "8080:8080"
-    dns:
-      - 1.1.1.1
-      - 8.8.8.8
-    environment:
-      - SEARXNG_SETTINGS_PATH=/etc/searxng/settings.yml
-    volumes:
-      - ./searxng:/etc/searxng
-    restart: unless-stopped
-```
-
-```bash
-docker-compose up -d
-# Instance disponible sur http://localhost:8080
-```
-
-**Important** : dans `settings.yml`, activez le format JSON :
-
-```yaml
-search:
-  formats:
-    - html
-    - json
-```
-
 ## 🔗 Utilisation comme module Python
 
 ```python
@@ -160,10 +126,6 @@ print(page["content"][:500])
 - Vérifiez que l'URL SearXNG est correcte
 - Vérifiez que l'instance est accessible : `curl -s "https://votre-instance.com/search?q=test&format=json" | head -20`
 - Vérifiez que le format JSON est activé dans `settings.yml`
-
-### `Temporary failure in name resolution`
-- Vérifiez les DNS dans votre docker-compose
-- `docker exec -t <container> ping -c 2 8.8.8.8`
 
 ### `Invalid JSON response`
 - Le format JSON n'est pas activé dans SearXNG
