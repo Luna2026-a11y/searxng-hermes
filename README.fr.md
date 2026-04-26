@@ -122,6 +122,35 @@ print(page["content"][:500])
    Frieza is the emperor of Universe 7...
 ```
 
+## 🔩 Patch natif Hermes (Avancé)
+
+Pour une intégration complète sans avoir besoin du skill à l'exécution, vous pouvez patcher `web_tools.py` directement pour que SearXNG devienne un backend natif — au même titre que Firecrawl, Tavily, Exa ou Parallel.
+
+### Ce que fait le patch
+
+- Ajoute `"searxng"` comme backend valide dans `_get_backend()` / `_is_backend_available()`
+- Auto-détecte SearXNG quand `SEARXNG_URL` est défini ou `web.searxng_url` est dans la config
+- Route `web_search` et `web_extract` via SearXNG quand il est sélectionné
+- Pas besoin de clé API — juste l'URL de votre instance SearXNG
+
+### Appliquer le patch
+
+```bash
+python3 hermes-patch/patch_searxng.py
+```
+
+Le script est **idempotent** — sûr à lancer plusieurs fois. Il détecte les patches existants et les ignore.
+
+### ⚠️ Après chaque mise à jour d'Hermes
+
+Les mises à jour d'Hermes écrasent `web_tools.py`. Re-appliquez le patch :
+
+```bash
+python3 ~/.hermes/scripts/patch_searxng.py
+```
+
+Le script est aussi installé à `~/.hermes/scripts/patch_searxng.py` pour plus de commodité.
+
 ## ⚠️ Dépannage
 
 ### `Connexion refusée`
@@ -132,6 +161,11 @@ print(page["content"][:500])
 ### `Invalid JSON response`
 - Le format JSON n'est pas activé dans SearXNG
 - Ajoutez `- json` dans `search.formats` dans `settings.yml`
+
+### Le patch ne prend pas effet
+- Relancez `python3 hermes-patch/patch_searxng.py`
+- Vérifiez que `~/.hermes/config.yaml` contient `web.backend: searxng`
+- Vérifiez avec : `grep -n searxng ~/.hermes/hermes-agent/tools/web_tools.py`
 
 ## 📝 Licence
 

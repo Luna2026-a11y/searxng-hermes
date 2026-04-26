@@ -39,6 +39,7 @@ Hermes Agent uses paid web backends (Firecrawl, Tavily, Exa, Parallel) for `web_
 | `searxng_search.mjs` | Node.js alternative |
 | `searx-search` | Bash wrapper for quick CLI usage |
 | `SKILL.md` | Hermes Agent skill — install in 30 seconds |
+| `hermes-patch/patch_searxng.py` | Native Hermes patch — SearXNG as built-in backend |
 
 ## 🚀 Quick Start (Hermes Agent)
 
@@ -138,6 +139,35 @@ print(page["content"][:500])
    Frieza is the emperor of Universe 7...
 ```
 
+## 🔩 Native Hermes Patch (Advanced)
+
+For full integration without needing the skill at runtime, you can patch `web_tools.py` directly so SearXNG becomes a native backend — same status as Firecrawl, Tavily, Exa, or Parallel.
+
+### What the patch does
+
+- Adds `"searxng"` as a valid backend in `_get_backend()` / `_is_backend_available()`
+- Auto-detects SearXNG when `SEARXNG_URL` is set or `web.searxng_url` is in config
+- Routes `web_search` and `web_extract` through SearXNG when selected
+- No API key needed — just your SearXNG URL
+
+### Apply the patch
+
+```bash
+python3 hermes-patch/patch_searxng.py
+```
+
+The script is **idempotent** — safe to run multiple times. It detects existing patches and skips them.
+
+### ⚠️ After every Hermes update
+
+Hermes updates overwrite `web_tools.py`. Re-apply the patch:
+
+```bash
+python3 ~/.hermes/scripts/patch_searxng.py
+```
+
+The script is also installed at `~/.hermes/scripts/patch_searxng.py` for convenience.
+
 ## ⚠️ Troubleshooting
 
 ### `Connection refused`
@@ -148,6 +178,11 @@ print(page["content"][:500])
 ### `Invalid JSON response`
 - JSON format is not enabled in SearXNG
 - Add `- json` to `search.formats` in `settings.yml`
+
+### Patch didn't take effect
+- Run `python3 hermes-patch/patch_searxng.py` again
+- Check `~/.hermes/config.yaml` has `web.backend: searxng`
+- Verify with: `grep -n searxng ~/.hermes/hermes-agent/tools/web_tools.py`
 
 ## 📝 License
 
