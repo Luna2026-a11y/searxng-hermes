@@ -1,0 +1,16 @@
+#!/bin/bash
+# SearXNG Search wrapper for Hermes Agent
+# Usage: searx-search "votre recherche" [--json]
+
+if [ -z "$1" ]; then
+    echo "Usage: searx-search \"<votre recherche>\" [--json]"
+    echo "       searx-search --extract URL [URL...] [--json]"
+    echo ""
+    echo "Options d'environnement:"
+    echo "  SEARXNG_URL    URL de votre instance SearXNG"
+    echo "  SEARXNG_LANGUAGE  Code langue (défaut: fr)"
+    exit 1
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+python3 "$SCRIPT_DIR/searxng_search.py" "$@"
