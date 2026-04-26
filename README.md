@@ -4,6 +4,22 @@
 
 Token-optimized SearXNG connector for Hermes Agent — web search and content extraction through your own SearXNG instance, zero API keys, compact outputs.
 
+## 📊 Benchmark & Comparison
+
+**[→ Full Benchmark Results & Backend Comparison on BookStack](https://namel.fr/bookstack/books/web-search-backend-benchmark-searxng-hermes-vs-paid-apis)**
+
+Real measurements — SearXNG-Hermes vs Firecrawl, Tavily, Exa, Parallel. Token savings, latency, features, privacy, pricing. Zero hype, all numbers verified.
+
+### Quick numbers (measured)
+
+| | SearXNG-Hermes | Firecrawl | Tavily | Exa | Parallel |
+|---|---|---|---|---|---|
+| Cost | **$0** (unlimited) | $16–83/1k | ~$8/1k | ~$7/1k | ~$5/1k |
+| Search latency | ~1s | 2–5s | 1–3s | 0.18–1s | <5s |
+| Extract latency | **~0.2s** | 3–10s | 2–5s | ~1s | <3s |
+| Tokens/search | **418** (compact) | ~800–1500 | ~800–1200 | ~600–1000 | ~400–800 |
+| Privacy | **100% local** | Cloud | Cloud | Cloud | Cloud |
+
 ## 🎯 Why this repo?
 
 Hermes Agent uses paid web backends (Firecrawl, Tavily, Exa, Parallel) for `web_search` and `web_extract`. This repo provides a **free SearXNG alternative**:
